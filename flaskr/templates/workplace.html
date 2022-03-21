@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+<div class="container">
+  <h1 class="title">Welcome {{current_user.firstname}}!</h1>
+
+ <br>
+
+<div class="dropdown">
+  <button class="dropbtn btn btn-primary btn-block btn-large">Create</button>
+  <div class="dropdown-content">
+  {% if current_user.has_role("admin") %}
+    <a href="{{ url_for('main.create_project') }}">Create Project Folder</a>
+  {% endif%}
+    <a href="{{ url_for('main.upload_file') }}">Upload File</a>
+    
+  </div>
+</div>
+
+<div class="dropdown">
+  <button class="dropbtn btn btn-primary btn-block btn-large">List</button>
+  <div class="dropdown-content">
+    <a href="{{ url_for('main.folders_report') }}">Existing Projects</a>
+    <a href="{{ url_for('main.report') }}">Existing File</a>
+  </div>
+</div>
+
+<div class="dropdown">
+  <button class="dropbtn btn btn-primary btn-block btn-large">Delete</button>
+  <div class="dropdown-content">
+  {% if current_user.has_role("admin") %}
+    <a href="{{ url_for('main.delete_project') }}">Delete Project Folder</a>
+    {% endif%}
+    <a href="{{ url_for('main.select_folder') }}">Delete File</a>
+  </div>
+</div>
+
+
+
+
+
+</div>
+
+
+{% endblock %}

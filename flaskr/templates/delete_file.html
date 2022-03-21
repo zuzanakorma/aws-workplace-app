@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+
+<form method="POST" action="" class="box" enctype="multipart/form-data">
+  <h1 class="title">Delete Project File</h1>
+ <p>It is strongly advised to create backups from every file <br>
+  or folder that is being edited or deleted.
+   </p> 
+<br>
+{{ form.hidden_tag() }}
+    <div>{{ form.project_folder_name.label }}: {{ form.project_folder_name(class="dropbtn") }}</div>
+    <div>{{ form.file_to_delete.label }}: {{ form.file_to_delete(class="dropbtn") }}</div>
+  
+    <div>{{ form.file_to_delete_confirm.label }}: {{ form.file_to_delete_confirm() }}
+    
+    {% if form.file_to_delete_confirm.errors %}
+                        {% for error in form.file_to_delete_confirm.errors %}
+                            <span class="text-danger">{{ error }}</span></br>
+                        {% endfor %}
+                    {% endif %} </div>
+    <div >
+                {{ form.submit(class="btn btn-primary btn-block btn-large") }}
+            </div>
+</form>
+
+
+</div>
+    <script>
+        let folder_select = document.getElementById("bucket");
+        let file_select = document.getElementById("file");
+
+        folder_select.onchange = function()  {
+             
+            folder = folder_select.value;
+            
+            fetch('/file/' + folder).then(function(response) {
+
+                response.json().then(function(data) {
+                    var optionHTML = '';
+
+                    for (var folder of data.buckets) {
+                        optionHTML += '<option value="' + folder.id + '">' + folder.name + '</option>';
+                    }
+
+                    file_select.innerHTML = optionHTML;
+                })
+                
+            });
+        }
+    </script>
+
+{% endblock %}

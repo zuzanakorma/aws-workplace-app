@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+  
+
+<div class="container">
+
+<form method="POST" action="" class="box" enctype="multipart/form-data">
+<h1 class="title">Delete Project Folder</h1>
+{{ form.hidden_tag() }}
+
+  <p>Please be informed that with deleting Project Folder you will lose all files from Project!<br>
+  It is strongly advised to create backups from every folder or file that is being edited or deleted.
+   </p>
+
+    <div>{{ form.project_folder_name.label }}: {{ form.project_folder_name(class="dropbtn") }}</div>
+    <div>{{ form.project_to_delete.label }}: {{ form.project_to_delete() }}
+    
+    {% if form.project_to_delete.errors %}
+                        {% for error in form.project_to_delete.errors %}
+                            <span class="text-danger">{{ error }}</span></br>
+                        {% endfor %}
+                    {% endif %} </div>
+    <div >
+                {{ form.submit(class="btn btn-primary btn-block btn-large") }}
+            </div>
+</form>
+
+
+</div>
+
+
+{% endblock %}

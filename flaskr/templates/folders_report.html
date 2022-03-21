@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+<div class="container">
+  
+<div>
+<h1 class="title">All Projects</h1>
+</div>
+<table class="box">
+
+{% if buckets %}
+{% for bucket in buckets %}
+<tr>
+    <th>{{ bucket }}</th>
+</tr>
+        
+{% endfor %}
+
+
+ {% endif %}
+</table>
+</div>
+
+
+{% endblock %}

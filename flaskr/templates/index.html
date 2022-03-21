@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="box1">
+	<h1>PharmaMax</h1>
+
+  <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-block btn-large">Login</a>
+  <a href="{{ url_for('auth.register') }}" class="btn btn-secondary btn-block btn-large">Register</a>
+
+</div>
+
+<div>
+
+<img src="static/img/img2.jpg" class="img-fluid rounded-circle   d-md-block img2 float-left">
+
+</div>
+
+{% endblock %}

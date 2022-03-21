@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="box1">
+	
+     <form method="POST" action="">
+     <h1>Register</h1>
+            {{ form.hidden_tag() }}
+
+                    {% if form.firstname.errors %}
+                       
+                        <div class="text-danger">
+                            {% for error in form.firstname.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                             {{ form.firstname() }}
+                        </div>
+                    {% else %}
+                        {{ form.firstname() }}
+                    {% endif %}
+
+                    {% if form.lastname.errors %}
+                        
+                        <div class="text-danger">
+                            {% for error in form.lastname.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                            {{ form.lastname() }}
+                        </div>
+                    {% else %}
+                        {{ form.lastname() }}
+                    {% endif %}
+
+                    {% if form.email.errors %}
+                        
+                        <div class="text-danger">
+                            {% for error in form.email.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                            {{ form.email() }}
+                        </div>
+                    {% else %}
+                        {{ form.email() }}
+                    {% endif %}
+
+                    {% if form.department.errors %}
+                        <div class="text-danger">
+                            {% for error in form.department.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                    {{ form.department(class="dropdown dropdown-toggle btn btn-primary btn-block btn-large") }}
+
+                        </div>
+                    {% else %}
+                    {{ form.department(class="dropdown dropdown-toggle btn btn-primary btn-block btn-large") }}
+
+                    {% endif %}
+
+                        
+                    {% if form.password.errors %}
+                        
+                        <div class="text-danger">
+                            {% for error in form.password.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                            {{ form.password() }}
+                        </div>
+                    {% else %}
+                        {{ form.password() }}
+                    {% endif %}
+
+                    {% if form.confirm_password.errors %}
+                        
+                        <div class="text-danger">
+                            {% for error in form.confirm_password.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                            {{ form.confirm_password() }}
+                        </div>
+                    {% else %}
+                        {{ form.confirm_password() }}
+                    {% endif %}
+
+            <div >
+                {{ form.submit(class="btn btn-primary btn-block btn-large") }}
+            </div>
+        </form>
+</div>
+
+{% endblock %}
