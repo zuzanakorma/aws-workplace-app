@@ -1,21 +1,21 @@
 import boto3
 import logging
-# import os
+import os
 from botocore.exceptions import ClientError
-from flaskr.config import Config
-# from dotenv import load_dotenv
+from dotenv import load_dotenv
 
 # # take environment variables from .env
-# load_dotenv()
+load_dotenv()
 
 # Set up logger
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
+# Use os module in the interim to avoid circular import with config.py
+s3_client = boto3.client('s3', aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"), 
+                            aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY"),
+                            region_name=os.environ.get("AWS_REGION"))
 
-s3_client = boto3.client('s3', aws_access_key_id=Config.AWS_ACCESS_KEY_ID, 
-                            aws_secret_access_key=Config.AWS_SECRET_ACCESS_KEY,
-                            region_name=Config.AWS_REGION)
 
 # ============== Files =========================
 def upload_new_file(file_data, bucket_name):
@@ -100,6 +100,14 @@ def delete_my_bucket(bucket_name):
         
 
 
+# ============== SSM Parameter store =========================
+ssm_client = boto3.client('ssm', aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"), 
+                            aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY"),
+                            region_name=os.environ.get("AWS_REGION"))
 
-
-
+def get_secrets(parameter_name, parameter_decryption=True):
+    response = ssm_client.get_parameter(
+        Name=parameter_name, 
+        WithDecryption=parameter_decryption
+        )
+    return response['Parameter']['Value']
