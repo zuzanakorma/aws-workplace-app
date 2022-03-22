@@ -1,7 +1,8 @@
 import boto3
 import logging
-import os
+# import os
 from botocore.exceptions import ClientError
+from flaskr.config import Config
 # from dotenv import load_dotenv
 
 # # take environment variables from .env
@@ -12,9 +13,9 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
 
-s3_client = boto3.client('s3', aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"), 
-                            aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY"),
-                            region_name=os.environ.get("AWS_REGION"))
+s3_client = boto3.client('s3', aws_access_key_id=Config.AWS_ACCESS_KEY_ID, 
+                            aws_secret_access_key=Config.AWS_SECRET_ACCESS_KEY,
+                            region_name=Config.AWS_REGION)
 
 # ============== Files =========================
 def upload_new_file(file_data, bucket_name):

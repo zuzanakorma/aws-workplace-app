@@ -7,6 +7,7 @@ from flaskr.my_utils import create_new_bucket, delete_my_file, upload_new_file, 
                     list_my_buckets, delete_my_bucket, list_files_in_bucket
 from flaskr.models import Projects, Uploads, User, Department
 from flask import  Blueprint
+from flaskr.config import Config
 
 
  
@@ -44,7 +45,7 @@ def create_project():
     form = CreateProjectFolderForm()
     if form.validate_on_submit():
         bucket = form.project_folder_name.data
-        create_new_bucket(bucket, region="eu-west-2")
+        create_new_bucket(bucket, region=Config.AWS_REGION)
         department_id = Department.query.get(current_user.department_id)
         project=Projects(name=bucket, folder=department_id)
         db.session.add(project)
