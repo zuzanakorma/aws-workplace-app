@@ -23,12 +23,34 @@ my_config = Config(
     }
 )
 
-# Use os module in the interim to avoid circular import with config.py
-s3_client = boto3.client('s3',
-                        config=my_config,
+
+sts_client = boto3.client("sts", config=my_config,
                         aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"),
                         aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY")
                         )
+
+assumed_role_object=sts_client.assume_role(
+    RoleArn=os.environ.get("AWS_ASSUMED_ROLE_ARN"),
+    RoleSessionName="AssumeRoleSession1"
+)
+
+credentials=assumed_role_object['Credentials']
+
+s3_client = boto3.client("s3",
+                         config=my_config,
+                         aws_access_key_id=credentials['AccessKeyId'],
+                         aws_secret_access_key=credentials['SecretAccessKey'],
+                         aws_session_token=credentials['SessionToken']
+                         )
+                         
+                         
+# Use os module in the interim to avoid circular import with config.py
+
+# s3_client = boto3.client('s3',
+#                         config=my_config,
+#                         aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"),
+#                         aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY")
+#                         )
 
 
 # ============== Files =========================
@@ -116,10 +138,11 @@ def delete_my_bucket(bucket_name):
 
 # ============== SSM Parameter store =========================
 ssm_client = boto3.client('ssm',
-                        config=my_config,
-                        aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"),
-                        aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY")
-                        )
+                          config=my_config,
+                          aws_access_key_id=credentials['AccessKeyId'],
+                          aws_secret_access_key=credentials['SecretAccessKey'],
+                          aws_session_token=credentials['SessionToken']
+                         )
 
 def get_secrets(parameter_name, parameter_decryption=True):
     response = ssm_client.get_parameter(

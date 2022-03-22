@@ -21,9 +21,11 @@ class Config:
 
     MAIL_USERNAME = os.environ.get("EMAIL_USERNAME") or "fake@email.com"
     MAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD") or "securepassword"
+    
 
-    AWS_ACCESS_KEY_ID=os.environ.get("AWS_ACCESS_KEY_ID") or "yourAWSaccessKey"
-    AWS_SECRET_ACCESS_KEY=os.environ.get("AWS_SECRET_ACCESS_KEY") or "yourAWSsecretKey"
+
+    # AWS_ACCESS_KEY_ID=os.environ.get("AWS_ACCESS_KEY_ID") or "yourAWSaccessKey"
+    # AWS_SECRET_ACCESS_KEY=os.environ.get("AWS_SECRET_ACCESS_KEY") or "yourAWSsecretKey"
     AWS_REGION=os.environ.get("AWS_REGION") or "eu-central-1"
     # S3_LOCATION = 'https://{}.s3.{}.amazonaws.com/'.format(os.environ.get("S3_BUCKET"), os.environ.get("REGION")) or "eu-west-2"
 
