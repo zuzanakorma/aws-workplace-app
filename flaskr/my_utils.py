@@ -16,7 +16,7 @@ logger = logging.getLogger()
 
 my_config = Config(
     region_name = os.environ.get("AWS_REGION") or 'eu-central-1',
-    signature_version = 'v4',
+    # signature_version = 'v4',
     retries = {
         'max_attempts': 10,
         'mode': 'standard'
