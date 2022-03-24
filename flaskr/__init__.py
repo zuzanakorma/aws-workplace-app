@@ -8,7 +8,6 @@ def create_app(config_class=Config):
     
     from flaskr.extensions import db, login_manager, mail, admin
     db.init_app(app)
-    # bcrypt.init_app(app)
     login_manager.init_app(app)
     mail.init_app(app)
     admin.init_app(app)
@@ -47,11 +46,8 @@ def create_app(config_class=Config):
         def secure_admin_index():
             return admin_index()
 
-   
-
-
 #   define a context processor for merging flask-admin's template context into the
-#     flask-security views.    
+#   flask-security views.    
     @security.context_processor
     def security_context_processor():
         return dict(
@@ -115,12 +111,6 @@ def create_app(config_class=Config):
 
         user_datastore.find_or_create_role(name='admin', description='Administrator')
         user_datastore.find_or_create_role(name='end-user', description='End user')
-       
-        # if not user_datastore.get_user('user@example.com'):
-        #     user_datastore.create_user(email='johngoe@example.com', password=utils.encrypt_password('1234'))
-        # if not user_datastore.get_user('admin@example.com'):
-        #     user_datastore.create_user(email='admin@example.com', password=utils.encrypt_password('password'))
-        # db.session.commit()
 
         user_datastore.add_role_to_user('user@example.com', 'end-user')
         user_datastore.add_role_to_user('admin@example.com', 'admin')

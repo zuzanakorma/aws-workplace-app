@@ -1,0 +1,93 @@
+---
+Parameters:
+  KeyName:
+    Description: The EC2 Key Pair to allow SSH access to the instance
+    Type: 'AWS::EC2::KeyPair::KeyName'
+  UserData:
+    Type: String
+  AvailabilityZone:
+    Type: String
+    Description: Availability Zone into which instance will launch
+    Default: eu-central-1b
+  ImageId:
+    Type: AWS::EC2::Image::Id
+    Description: 'Linux 2 AMI for eu-central-1 Region'
+    Default: 'ami-0dcc0ebde7b2e00db'
+
+
+Resources:
+  MyWorkplaceInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      AvailabilityZone: !Ref AvailabilityZone
+      ImageId: !Ref ImageId
+      InstanceType: t2.micro
+      KeyName: !Ref KeyName
+      UserData: !Ref UserData
+      SecurityGroups:
+        - !Ref WorkplaceSecurityGroup
+      IamInstanceProfile: !Ref WorkplaceInstanceProfile
+
+
+# EC2 security group
+  WorkplaceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: SecurityGroupDescription
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 80
+        ToPort: 80
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: 22
+        ToPort: 22
+        CidrIp: 0.0.0.0/0
+
+
+
+# IAM role can’t be directly attached to an EC2 instance. 
+# First instance profile needs to be created with the role 
+# and then instance profile is attached to an instance.
+# Using CLI, SDKs and CloudFormation, needs role and instance profile 
+# to be created separately.
+
+
+  WorkplaceInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties: 
+      InstanceProfileName: workplace-ec2-instance-profile
+      Path: /
+      Roles: 
+       - !Ref WorkplaceEc2InstanceRole
+
+
+  WorkplaceEc2InstanceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: workplace-ec2-instance-role
+      ManagedPolicyArns: 
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: /
+
+
+
+
+
+
+
+  
+
+
+
+

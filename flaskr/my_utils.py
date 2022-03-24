@@ -7,7 +7,7 @@ from botocore.config import Config
 
 from dotenv import load_dotenv
 
-# # take environment variables from .env
+# take environment variables from .env
 load_dotenv()
 
 # Set up logger
@@ -16,7 +16,6 @@ logger = logging.getLogger()
 
 my_config = Config(
     region_name = os.environ.get("AWS_REGION") or 'eu-central-1',
-    # signature_version = 'v4',
     retries = {
         'max_attempts': 10,
         'mode': 'standard'
@@ -46,33 +45,13 @@ except:
 
 s3_client = boto3.client("s3",**aws_client_creds)
     
-    # s3_client = boto3.client("s3",
-    #                         config=my_config,
-    #                         aws_access_key_id=credentials['AccessKeyId'],
-    #                         aws_secret_access_key=credentials['SecretAccessKey'],
-    #                         aws_session_token=credentials['SessionToken']
-    #                         )
-                         
-                        
-# Use os module in the interim to avoid circular import with config.py
-
-# s3_client = boto3.client('s3',
-#                         config=my_config,
-#                         aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"),
-#                         aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY")
-#                         )
-
 
 # ============== Files =========================
 def upload_new_file(file_data, bucket_name):
     try:
         upload_file_bucket = bucket_name
         upload_file_key = str(file_data.filename)
-        # upload_file_key = bucket_name + "/" + str(file_data.filename)
         s3_client.put_object(Bucket=upload_file_bucket, Body=file_data.read(),Key=upload_file_key)
-
-        # problem: filename needs to be str, upload_file doesnt support bytes
-        # s3_client.upload_file(file_name.read(), upload_file_bucket, upload_file_key)
         logger.info(f'File {file_data} uploaded')
     except ClientError as e:
         logging.error(e)
@@ -122,7 +101,6 @@ def list_my_buckets():
     for bucket in response['Buckets']:
         bucket_list.append(bucket["Name"])
 
-        # print(f'{bucket["Name"]}')
     return bucket_list
 
 
