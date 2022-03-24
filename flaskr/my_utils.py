@@ -71,12 +71,12 @@ def delete_my_file(file_name, bucket_name):
 
 
 def list_files_in_bucket(bucket_name):
-    s3 = boto3.resource('s3')
-    response = s3.Bucket(bucket_name)
+    response = s3_client.list_objects_v2(Bucket=bucket_name)
     file_list = []
-    for file in response.objects.all():
-        file_list.append(file.key)
+    for file in response["Contents"]:
+        file_list.append(file["Key"])
     return file_list
+        
 
 # ============== Buckets =========================
 
@@ -88,8 +88,6 @@ def create_new_bucket(bucket_name, region):
         logger.info(f'Bucket {bucket_name} created')
              
     except ClientError as e:
-        # The exceptions are related to issues with client-side behaviors, 
-        # configurations, or validations.
         logging.error(e)
         return False
     return True
@@ -105,21 +103,19 @@ def list_my_buckets():
 
 
 def delete_my_bucket(bucket_name):
-    s3 = boto3.resource('s3')
-    bucket = s3.Bucket(bucket_name)
     try:
-        bucket.delete()
+        response = s3_client.delete_bucket(Bucket=bucket_name)
         logger.info(f'Bucket {bucket_name} deleted')
     except:
         all_files = list_files_in_bucket(bucket_name)
         list_keys = []
         for i in all_files:
             list_keys.append({"Key": i})
-        response = bucket.delete_objects(
+        response = s3_client.delete_objects(Bucket=bucket_name,
             Delete={
                 'Objects': list_keys
             })
-        bucket.delete()
+        response = s3_client.delete_bucket(Bucket=bucket_name)
         logger.info(f'Bucket {bucket_name} deleted')
         
 
