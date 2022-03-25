@@ -80,7 +80,10 @@ Resources:
               - sts:AssumeRole
       Path: /
 
-
+Outputs:
+  MyWorkplaceInstancePublicDnsName:
+    Description: The Public DNS name of the EC2 Instance
+    Value: !GetAtt MyWorkplaceInstance.PublicDnsName
 
 
 
