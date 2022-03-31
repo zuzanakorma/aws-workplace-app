@@ -1,4 +1,3 @@
-from distutils.command.config import config
 import boto3
 import logging
 import os
@@ -69,14 +68,27 @@ def delete_my_file(file_name, bucket_name):
         return False
     return True
 
-
-def list_files_in_bucket(bucket_name):
+# check if bucket is empty before list objects, to avoid error. 
+def is_bucket_empty(bucket_name):
     response = s3_client.list_objects_v2(Bucket=bucket_name)
-    file_list = []
-    for file in response["Contents"]:
-        file_list.append(file["Key"])
-    return file_list
+    if response['KeyCount']== 0:
+        return True
+    else:
+        return response
         
+        
+def list_files_in_bucket(bucket_name):
+    response = is_bucket_empty(bucket_name)
+    if response is not True:
+        file_list = []
+        for file in response["Contents"]:
+            file_list.append(file["Key"])
+        return file_list
+    else:
+        logger.info(f'Project folder {bucket_name} is empty!')
+        return False
+
+            
 
 # ============== Buckets =========================
 
