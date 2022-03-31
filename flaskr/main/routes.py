@@ -151,14 +151,17 @@ def folders_report():
 @main.route('/download/<bucket>')
 @login_required
 def download(bucket):
-    with open("flaskr/download.csv","w") as f:
-        for file in list_files_in_bucket(bucket):
-            f.writelines(file)
-            f.write("\n")
-        # flash(f"File \'download.csv' has been downloaded", "success")
-    return send_file('download.csv')
-
-    # return redirect(url_for('workplace'))
+    files = list_files_in_bucket(bucket)
+    if files is not False:
+        with open("flaskr/download.csv","w") as f:
+            for file in files:
+                f.writelines(file)
+                f.write("\n")
+            # flash(f"File \'download.csv' has been downloaded", "success")
+        return send_file('download.csv')
+    else:
+        flash(f"Project folder {bucket} is empty!", "warning")
+        return redirect(url_for('main.workplace'))
    
 @main.route('/report', methods=["GET", "POST"])
 @login_required
