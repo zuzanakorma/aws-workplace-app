@@ -15,23 +15,19 @@
   <div>
   <h1 class="title">Welcome {{current_user.firstname}}!</h1>
   </div>
-  <hr>
   <br>
   <section>
-    <div>
+    <div class="main">
         <h2>Latest Projects</h2>
         
-    </div>
+    </div> 
   </section>
 
-<hr>
 <br>
 
  <section>
-  <div>
+  <div class="main">
       <h2>News</h2>
-  
- 
       {% for article in news["articles"] %}
           <br>
       <div>
@@ -41,18 +37,27 @@
               <p class="newstext">{{ article["description"] }}</p>
               
           </div>
-          <div class="flex-shrink-0"><span class="text-secondary">Published: {{ article["publishedAt"]}}</span></div>
-          
-      
+          <div class="flex-shrink-0"><span class="text-secondary">Published: {{ article["publishedAt"].split("T").pop(0)}}</span></div>       
       </div>
       <hr>
       <br>
       {% endfor %}
-   
-      
-      
   </div>
 </section>
+
+<div class="col-md-4 sidenav">
+  <div class="sidebar">
+    <h3>Our Sidebar</h3>
+    <p class='text-muted'>You can put any information here you'd like.
+      <ul class="list-group">
+        <li class="list-group-item list-group-item-light">Projects</li>
+        <li class="list-group-item list-group-item-light">Announcements</li>
+        <li class="list-group-item list-group-item-light">Calendar</li>
+        <li class="list-group-item list-group-item-light">etc</li>
+      </ul>
+    </p>
+  </div>
+</div>
 </div>
 
 {% endblock %}

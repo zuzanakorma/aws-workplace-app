@@ -23,8 +23,15 @@ body {
 }
 
 .container {
-    margin-top: 10rem;
+	margin-top: 80px;
 	text-align: center;
+}
+.main{
+	margin-left: 200px
+}
+
+.title{
+	padding-bottom: 20px;	
 }
 
 .img-fluid{
@@ -79,6 +86,21 @@ a:hover {
 	width:300px;
 	height:300px;
 }
+
+/* side bar */
+.sidebar {
+    background: #ffffff;
+	width: 300px;
+	position: fixed;
+	z-index: -1;
+	top: 150px;
+	left: 30px;
+	overflow-x: hidden;
+    padding: 10px 20px;
+    border: 1px solid #dddddd;
+    border-radius: 3px;
+    margin-bottom: 20px;
+  }
 
 h1 { 
 	color: #fff; 

@@ -15,7 +15,12 @@
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="/">PharmaMax</a>
+    {% if not logged_in %}
+    <a class="navbar-brand" href="/">PharmaMax</a>
+     {% else %}
+     <a class="navbar-brand" href="{{ url_for('main.home') }}">PharmaMax</a>
+     {% endif %}
+
   <div class="collapse navbar-collapse">
     <ul class="navbar-nav ml-auto">
       

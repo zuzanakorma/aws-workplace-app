@@ -1,8 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, BooleanField
 from wtforms.fields.core import SelectField
-from wtforms.validators import DataRequired, EqualTo, NoneOf, Regexp, Length, Email, Optional
-
+from wtforms.validators import DataRequired, EqualTo, NoneOf, Length, Email, ValidationError
+from flaskr.models import User
 
 
 
@@ -37,3 +37,19 @@ class LoginForm(FlaskForm):
     #             raise ValidationError('That email is taken. Please choose a different one.')               
 
 
+class RequestResetForm(FlaskForm):
+    email = StringField(render_kw={"placeholder": "Email"},
+                        validators=[DataRequired(), Email()])
+    submit = SubmitField('Request Password Reset')
+
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user is None:
+            raise ValidationError('There is no account with that email. You must register first.')
+
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField(render_kw={"placeholder": "Password"}, validators=[DataRequired()])
+    confirm_password = PasswordField(render_kw={"placeholder": 'Confirm Password'},
+                                     validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Reset Password')

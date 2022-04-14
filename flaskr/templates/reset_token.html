@@ -1,7 +1,8 @@
 {% extends "base.html" %}
+
 {% block content %}
 <div class="box1">
-    <h1>Login</h1>
+    <h1>Reset Password</h1>
     {% with messages = get_flashed_messages() %}
       {% if messages %}
         {% for message in messages %}
@@ -9,23 +10,12 @@
         {% endfor %}
       {% endif %}
     {% endwith %}
+
+
     <form method="post">
         {{ form.hidden_tag() }}
-         {% if form.email.errors %}
-                        
-                        <div class="text-danger">
-                            {% for error in form.email.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                            {{ form.email() }}
-                        </div>
-                    {% else %}
-                        {{ form.email() }}
-                    {% endif %}
-
-
-
-                     {% if form.password.errors %}
+   
+        {% if form.password.errors %}
                         
                         <div class="text-danger">
                             {% for error in form.password.errors %}
@@ -36,17 +26,22 @@
                     {% else %}
                         {{ form.password() }}
                     {% endif %}
-       
-        <div >
-                
-                <div class="form-group">
-                {{ form.submit(class="btn btn-primary btn-block btn-large") }}
-                <small class="text-muted ml-2">
-                    <a href="{{ url_for('auth.reset_request') }}">Forgot Password?</a>
-                </small>
-                </div>
-        </div>
-    </form>
-</div>
 
-{% endblock %}
+                    {% if form.confirm_password.errors %}
+                        
+                        <div class="text-danger">
+                            {% for error in form.confirm_password.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                            {{ form.confirm_password() }}
+                        </div>
+                    {% else %}
+                        {{ form.confirm_password() }}
+                    {% endif %}
+
+            <div >
+                {{ form.submit(class="btn btn-primary btn-block btn-large") }}
+            </div>
+     </form>
+</div>
+{% endblock content %}
