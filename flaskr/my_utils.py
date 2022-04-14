@@ -2,11 +2,13 @@ import boto3
 import logging
 import requests
 import os
+from flask import url_for
 from botocore.exceptions import ClientError
 from botocore.config import Config
-
+from flask_mail import Message, Mail
 from dotenv import load_dotenv
 
+mail = Mail()
 # take environment variables from .env
 load_dotenv()
 
@@ -143,7 +145,7 @@ def get_secrets(parameter_name, parameter_decryption=True):
         )
     return response['Parameter']['Value']
 
-
+# ============== Get News APIs =========================
 def get_news(query, language, category, country, sort_by):
     OWM_Endpoint = "https://newsapi.org/v2/top-headlines?"
     api_key=os.environ.get("api_key")
@@ -161,3 +163,16 @@ def get_news(query, language, category, country, sort_by):
     response = requests.get(url=OWM_Endpoint, params=params, headers=headers)
     result = response.json()
     return result
+
+# ============== Send email to reset password =========================
+def send_reset_email(user):
+    token = user.get_reset_token()
+    msg = Message('Password Reset Request',
+                  sender="noreply@demo.com",
+                  recipients=[user.email])
+    msg.body = f'''To reset your password, visit the following link:
+    {url_for('auth.reset_token', token=token, _external=True)}
+If you did not make this request then simply ignore this email and no changes will be made.
+'''
+    mail.send(msg)
+    return 'Sent'
