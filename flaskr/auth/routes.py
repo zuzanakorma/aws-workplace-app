@@ -33,7 +33,7 @@ def register():
 @auth.route('/login', methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('main.workplace'))
+        return redirect(url_for('main.home'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
@@ -41,7 +41,7 @@ def login():
         # if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user)
             flash('You are logged in!', 'success')
-            return redirect(url_for('main.workplace'))
+            return redirect(url_for('main.home'))
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
     
@@ -52,4 +52,4 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('main.home'))
+    return redirect(url_for('main.index'))

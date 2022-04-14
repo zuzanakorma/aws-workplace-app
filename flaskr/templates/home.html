@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+
+
+<div class="container">
+  <div>
+  <h1 class="title">Welcome {{current_user.firstname}}!</h1>
+  </div>
+  <hr>
+  <br>
+  <section>
+    <div>
+        <h2>Latest Projects</h2>
+        
+    </div>
+  </section>
+
+<hr>
+<br>
+
+ <section>
+  <div>
+      <h2>News</h2>
+  
+ 
+      {% for article in news["articles"] %}
+          <br>
+      <div>
+          <div>
+              <h3 class="newstitle"><a href="{{ article["url"] }}" target=_blank>{{ article["title"]}} </a></h3>
+              <div class="subheading mb-3">Author: {{ article["author"] }}</div>
+              <p class="newstext">{{ article["description"] }}</p>
+              
+          </div>
+          <div class="flex-shrink-0"><span class="text-secondary">Published: {{ article["publishedAt"]}}</span></div>
+          
+      
+      </div>
+      <hr>
+      <br>
+      {% endfor %}
+   
+      
+      
+  </div>
+</section>
+</div>
+
+{% endblock %}

@@ -31,8 +31,8 @@ class Config:
     SECURITY_USER_IDENTITY_ATTRIBUTES= os.environ.get("SECURITY_USER_IDENTITY_ATTRIBUTES") or 'email'
     SECURITY_PASSWORD_HASH= os.environ.get("SECURITY_PASSWORD_HASH") or 'pbkdf2_sha512'
     SECURITY_PASSWORD_SALT= os.environ.get("SECURITY_PASSWORD_SALT") or get_secrets("SECURITY_PASSWORD_SALT")  or "yourVerySecureSatlPassword"
-    SECURITY_LOGIN_URL="/templates//login.html"
-    SECURITY_POST_LOGIN_VIEW="/workplace"
+    SECURITY_LOGIN_URL="/login"
+    # SECURITY_POST_LOGIN_VIEW="/workplace"
     SECURITY_LOGIN_USER_TEMPLATE="/login.html"
     # default is none, but custom 403.html didnt work without it
     SECURITY_UNAUTHORIZED_VIEW=None

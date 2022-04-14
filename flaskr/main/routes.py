@@ -4,19 +4,27 @@ from flask_security import current_user, login_required, roles_required
 from .forms import CreateProjectFolderForm, UploadFileForm, DeleteProjectFolderForm, \
                     DeleteFileForm, FileReportForm, SelectFolderForm
 from flaskr.my_utils import create_new_bucket, delete_my_file, upload_new_file, \
-                    list_my_buckets, delete_my_bucket, list_files_in_bucket
+                    list_my_buckets, delete_my_bucket, list_files_in_bucket, get_news
 from flaskr.models import Projects, Uploads, User, Department
 from flask import  Blueprint
 from flaskr.config import Config
+import json
 
 
  
 main = Blueprint('main', __name__)
 
 @main.route('/')
-def home():
-    return render_template("index.html", logged_in=current_user.is_authenticated)
+def index():
+    return render_template("index.html")
 
+@main.route('/home', methods=["GET", "POST"])
+@login_required
+def home():
+    # f = open('news.json', 'r').read()
+    # news = json.loads(f)
+    news = get_news('q', 'en', 'health', 'us', 'popularity' )
+    return render_template("home.html", news=news, logged_in=current_user.is_authenticated)
 
 @main.route('/workplace')
 @login_required

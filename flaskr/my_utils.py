@@ -1,5 +1,6 @@
 import boto3
 import logging
+import requests
 import os
 from botocore.exceptions import ClientError
 from botocore.config import Config
@@ -141,3 +142,22 @@ def get_secrets(parameter_name, parameter_decryption=True):
         WithDecryption=parameter_decryption
         )
     return response['Parameter']['Value']
+
+
+def get_news(query, language, category, country, sort_by):
+    OWM_Endpoint = "https://newsapi.org/v2/top-headlines?"
+    api_key=os.environ.get("api_key")
+    params = {
+        'q':query,
+        'domains':'bbc.co.uk,techcrunch.com',
+        'language':language,
+        'country': country,
+        'category': category,
+        'sort_by':sort_by,
+        'page':1
+        }
+    headers = {'X-Api-Key': api_key}
+
+    response = requests.get(url=OWM_Endpoint, params=params, headers=headers)
+    result = response.json()
+    return result
