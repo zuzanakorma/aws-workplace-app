@@ -108,6 +108,13 @@ def create_new_bucket(bucket_name, region):
         return False
     return True
 
+# get dictionary with all info about bucket: Name, CreationDate and Owner
+def buckets_info():
+    response = s3_client.list_buckets()
+    
+    return response
+    
+    
 def list_my_buckets():
     response = s3_client.list_buckets()
     bucket_list = []
@@ -116,22 +123,6 @@ def list_my_buckets():
              
     return bucket_list
 
-
-# new function buckets_CreationDate() to display name and date for home page, 
-# can NOT use list_my_buckets(), 
-# because is used in  get_department_buckets() to compare aws and db => 
-# date is causing difference and not displaying...
-def buckets_CreationDate():
-    response = s3_client.list_buckets()
-    bucket_list = []
-    for bucket in response['Buckets']:
-        get_bucket= bucket["Name"]
-        get_date = str(bucket["CreationDate"])
-        date_format=datetime.fromisoformat(get_date)
-        date= str(date_format.strftime('%Y-%m-%d %H:%M:%S'))
-        bucket_list.append(get_bucket + ", created: " + date)
-        
-    return bucket_list
 
 def delete_my_bucket(bucket_name):
     try:
