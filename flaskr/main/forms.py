@@ -25,7 +25,7 @@ class CreateProjectFolderForm(FlaskForm):
 
 
 class UploadFileForm(FlaskForm):
-    project_folder_name = SelectField("All Projects", choices=[], validators=[DataRequired()])
+    project_folder_name = SelectField("Department Projects", choices=[], validators=[DataRequired()])
     file_name = StringField("File Name", validators=[Regexp("^.*\.(jpeg|png|jpg|gif|doc|pdf|docx|xls|xlsx|csv|txt|html)$", 
                         message='File name must have an extension to be uploaded'), Length(min=3, max=63)])
     file_to_upload = FileField('Upload Project File', validators=[DataRequired(), 
@@ -35,12 +35,12 @@ class UploadFileForm(FlaskForm):
 
 
 class SelectFolderForm(FlaskForm):
-    project_folder_name = SelectField("All Projects", choices=[], validators=[DataRequired()])
+    project_folder_name = SelectField("Department Projects", choices=[], validators=[DataRequired()])
     submit = SubmitField('Select')
 
 
 class DeleteProjectFolderForm(FlaskForm):
-    project_folder_name = SelectField("All Projects", choices=[], validators=[DataRequired()])
+    project_folder_name = SelectField("Department Projects", choices=[], validators=[DataRequired()])
     project_to_delete = StringField("Confirm Project Name", validators=[DataRequired(), EqualTo("project_folder_name", message='Project name must match!')])
     submit = SubmitField('Delete')
 
@@ -53,5 +53,5 @@ class DeleteFileForm(FlaskForm):
 
 
 class FileReportForm(FlaskForm):
-    project_folder_name = SelectField("All Projects", choices=[], validators=[DataRequired()])
+    project_folder_name = SelectField("Department Projects", choices=[], validators=[DataRequired()])
     submit = SubmitField('Download Your Files Report')
