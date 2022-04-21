@@ -3,9 +3,8 @@ from flask import redirect, render_template, flash, url_for, request, send_file
 from flask_security import current_user, login_required, roles_required 
 from .forms import CreateProjectFolderForm, UploadFileForm, DeleteProjectFolderForm, \
                     DeleteFileForm, FileReportForm, SelectFolderForm
-from flaskr.my_utils import create_new_bucket, delete_my_file, upload_new_file, \
-                    list_my_buckets, delete_my_bucket, list_files_in_bucket, get_news, \
-                        buckets_CreationDate
+from flaskr.my_utils import buckets_info, create_new_bucket, delete_my_file, upload_new_file, \
+                    list_my_buckets, delete_my_bucket, list_files_in_bucket, get_news
 from flaskr.models import Projects, Uploads, User, Department
 from flask import  Blueprint
 from flaskr.config import Config
@@ -23,7 +22,7 @@ def index():
 @login_required
 def home():
     department_id = Department.query.get(current_user.department_id)
-    buckets = buckets_CreationDate()
+    buckets = buckets_info()
     news = get_news('q', 'en', 'health', 'us', 'popularity' )
     return render_template("home.html", news=news, buckets=buckets, department_id=department_id, logged_in=current_user.is_authenticated)
 

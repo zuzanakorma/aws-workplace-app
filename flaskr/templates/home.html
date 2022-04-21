@@ -24,10 +24,10 @@
         <h2>Latest Projects in {{ department_id}}</h2>
         <br>
         {% if buckets %}
-        {% for bucket in buckets %}
+        {% for bucket in buckets["Buckets"] %}
       <div>
           <div>
-              <p class="newstext">{{ bucket }} </p>  
+              <p class="newstext">{{ bucket["Name"] }}, created: {{ bucket["CreationDate"].strftime('%Y-%m-%d %H:%M:%S') }} </p>  
           </div>
       </div>
       {% endfor %}
