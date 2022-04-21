@@ -13,21 +13,24 @@
 <div class="container">
   
 <div>
-<h1 class="title">All Projects</h1>
+<h1 class="title">Projects for {{ department_id }}</h1>
 </div>
-<table class="box">
 
+<br>
 {% if buckets %}
 {% for bucket in buckets %}
-<tr>
-    <th>{{ bucket }}</th>
-</tr>
-        
+
+  <div>
+      <p class="projectlist">{{ bucket }} </p> 
+  </div>
+       
 {% endfor %}
+{% endif %}
+<br>
 
-
- {% endif %}
-</table>
+<div class="dropdown">
+  <button class="dropbtn btn btn-primary btn-block btn-large"><a href="{{ url_for('main.workplace') }}">Workplace</a></button>
+</div>
 </div>
 
 
